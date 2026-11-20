@@ -1,76 +1,350 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>PAMAC Admin Dashboard</title>
+
 <link rel="stylesheet" href="../css/style.css">
+
 <style>
-.admin-wrap{max-width:1000px;margin:auto;padding:22px}
-.admin-card{background:white;padding:22px;border-radius:14px;margin:18px 0;box-shadow:0 4px 15px #0001}
-.admin-card input,.admin-card select{width:100%;padding:13px;margin:8px 0;border:1px solid #ddd;border-radius:8px;font-size:15px}
-.admin-btn{background:#54218a;color:white;border:0;padding:13px 20px;border-radius:8px;margin:5px 0;cursor:pointer}
-.danger{background:#dc3545}
-.success{background:#159447}
-.product-row{border:1px solid #eee;padding:14px;border-radius:10px;margin:10px 0}
-.hidden{display:none!important}
-#message{padding:10px;color:#54218a}
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: #f5f2fa;
+  font-family: Arial, sans-serif;
+  margin: 0;
+}
+
+.header {
+  background: #54218a;
+  color: white;
+  padding: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.header a {
+  color: white;
+  text-decoration: none;
+}
+
+.admin-wrap {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px;
+}
+
+.admin-card {
+  background: white;
+  padding: 22px;
+  border-radius: 14px;
+  margin: 18px 0;
+  box-shadow: 0 4px 15px #0001;
+}
+
+.admin-card input,
+.admin-card select {
+  width: 100%;
+  padding: 14px;
+  margin: 9px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+  background: white;
+}
+
+.admin-card label {
+  display: block;
+  font-weight: bold;
+  margin-top: 12px;
+  color: #54218a;
+}
+
+.admin-btn {
+  background: #54218a;
+  color: white;
+  border: none;
+  padding: 13px 18px;
+  border-radius: 8px;
+  margin: 6px 3px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.success {
+  background: #159447;
+}
+
+.danger {
+  background: #dc3545;
+}
+
+.orange {
+  background: #ff922b;
+}
+
+.hidden {
+  display: none !important;
+}
+
+#message {
+  padding: 12px;
+  color: #54218a;
+  font-weight: bold;
+  overflow-wrap: anywhere;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.stat-box {
+  background: #f3eafa;
+  padding: 18px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.stat-box h2 {
+  color: #54218a;
+  font-size: 28px;
+}
+
+.product-row {
+  border: 1px solid #eee;
+  padding: 15px;
+  border-radius: 12px;
+  margin: 12px 0;
+  background: #fff;
+  overflow-wrap: anywhere;
+}
+
+.product-row img {
+  width: 130px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+input[type="file"] {
+  background: #f8f5fc;
+}
+
+button:active {
+  transform: scale(.98);
+}
+
+@media(max-width:500px) {
+  .admin-wrap {
+    padding: 12px;
+  }
+
+  .admin-card {
+    padding: 15px;
+  }
+}
 </style>
 </head>
+
 <body>
+
 <header class="header">
-  <div class="logo">PAMAC<span>.</span> ADMIN</div>
-  <a href="../index.html" style="color:white">View Shop</a>
+  <div class="logo">
+    <strong>PAMAC<span>.</span> ADMIN</strong>
+  </div>
+
+  <a href="../index.html">View Customer Shop →</a>
 </header>
 
 <main class="admin-wrap">
-  <h1>Administration</h1>
-  <p>Manage your PAMAC footwear collection.</p>
-  <p id="message">Connect your Supabase project to continue.</p>
+
+  <h1>PAMAC Administration</h1>
+
+  <p>Manage your footwear collection, stock and product photos.</p>
+
+  <p id="message">Please sign in to manage PAMAC.</p>
+
+  <!-- ADMIN LOGIN -->
 
   <section id="login" class="admin-card">
+
     <h2>Admin Login</h2>
-    <input id="email" type="email" placeholder="Admin email">
-    <input id="password" type="password" placeholder="Password">
-    <button class="admin-btn" onclick="loginAdmin()">Sign In</button>
+
+    <label>Email Address</label>
+    <input
+      id="email"
+      type="email"
+      placeholder="Enter admin email"
+      autocomplete="username"
+    >
+
+    <label>Password</label>
+    <input
+      id="password"
+      type="password"
+      placeholder="Enter password"
+      autocomplete="current-password"
+    >
+
+    <button class="admin-btn success" onclick="loginAdmin()">
+      Sign In
+    </button>
+
   </section>
 
+  <!-- ADMIN DASHBOARD -->
+
   <section id="dashboard" class="hidden">
-    <div class="admin-card">
-      <h2>Stock Overview</h2>
-      <h1 id="totalProducts">0</h1>
-      <p>Total products</p>
-      <h2 id="totalStock">0</h2>
-      <p>Total pairs in stock</p>
-      <button class="admin-btn danger" onclick="logoutAdmin()">Sign Out</button>
-    </div>
+
+    <!-- STOCK OVERVIEW -->
 
     <div class="admin-card">
-      <h2 id="formTitle">Add New Shoe</h2>
-      <input id="productName" placeholder="Product name">
-      <input id="productPrice" type="number" placeholder="Price in KSh">
+
+      <h2>Stock Overview</h2>
+
+      <div class="stats">
+
+        <div class="stat-box">
+          <h2 id="totalProducts">0</h2>
+          <p>Total Products</p>
+        </div>
+
+        <div class="stat-box">
+          <h2 id="totalStock">0</h2>
+          <p>Pairs Available</p>
+        </div>
+
+      </div>
+
+      <button class="admin-btn danger" onclick="logoutAdmin()">
+        Sign Out
+      </button>
+
+    </div>
+
+    <!-- ADD NEW STOCK -->
+
+    <div class="admin-card">
+
+      <h2 id="formTitle">Add Newly Arrived Shoes</h2>
+
+      <label>Product Name</label>
+      <input
+        id="productName"
+        type="text"
+        placeholder="e.g. Dolly Shoes"
+      >
+
+      <label>Price (KSh)</label>
+      <input
+        id="productPrice"
+        type="number"
+        min="1"
+        placeholder="Enter selling price"
+      >
+
+      <label>Category</label>
       <select id="productCategory">
         <option value="Ladies">Ladies</option>
         <option value="Men">Men</option>
         <option value="Kids">Kids</option>
         <option value="Slides">Slides</option>
+        <option value="Unisex">Unisex</option>
       </select>
-      <input id="productSizes" placeholder="Sizes e.g. 27,28,29,30">
-      <input id="productQty" type="number" placeholder="Quantity in stock">
-      <input id="productImage" type="url" placeholder="Product image URL (optional)">
-      <button class="admin-btn success" onclick="saveProduct()">Save Product</button>
-      <button class="admin-btn hidden" id="cancelEdit" onclick="resetForm()">Cancel Edit</button>
+
+      <label>Available Shoe Sizes</label>
+      <input
+        id="productSizes"
+        type="text"
+        placeholder="e.g. 27,28,29,30,31"
+      >
+
+      <label>Quantity in Stock</label>
+      <input
+        id="productQty"
+        type="number"
+        min="0"
+        placeholder="Enter number of pairs"
+      >
+
+      <label>Upload Shoe Photo From Phone</label>
+      <input
+        id="productPhoto"
+        type="file"
+        accept="image/*"
+      >
+
+      <label>Or Enter Image URL</label>
+      <input
+        id="productImage"
+        type="url"
+        placeholder="Optional image URL"
+      >
+
+      <button
+        class="admin-btn success"
+        onclick="saveProduct()"
+      >
+        Save Product
+      </button>
+
+      <button
+        class="admin-btn orange hidden"
+        id="cancelEdit"
+        onclick="resetForm()"
+      >
+        Cancel Edit
+      </button>
+
     </div>
+
+    <!-- MANAGE PRODUCTS -->
 
     <div class="admin-card">
-      <h2>Manage Products</h2>
-      <div id="productList">Loading products...</div>
+
+      <h2>Manage PAMAC Products</h2>
+
+      <p>View, edit and remove shoes from your collection.</p>
+
+      <div id="productList">
+        Loading products...
+      </div>
+
     </div>
+
   </section>
+
 </main>
 
+<footer style="
+  background:#28133e;
+  color:white;
+  text-align:center;
+  padding:25px;
+  margin-top:30px;
+">
+  <strong>PAMAC FOOT WEAR COLLECTION</strong>
+  <p>Walk with confidence. Walk with PAMAC.</p>
+  <p>© 2026 PAMAC</p>
+</footer>
+
+<!-- SUPABASE -->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="../js/config.js"></script>
+
 <script src="../js/admin.js"></script>
+
 </body>
 </html>
+
