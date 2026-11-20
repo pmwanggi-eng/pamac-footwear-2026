@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PAMAC Admin Dashboard</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.admin-wrap{max-width:1000px;margin:auto;padding:22px}
+.admin-card{background:white;padding:22px;border-radius:14px;margin:18px 0;box-shadow:0 4px 15px #0001}
+.admin-card input,.admin-card select{width:100%;padding:13px;margin:8px 0;border:1px solid #ddd;border-radius:8px;font-size:15px}
+.admin-btn{background:#54218a;color:white;border:0;padding:13px 20px;border-radius:8px;margin:5px 0;cursor:pointer}
+.danger{background:#dc3545}
+.success{background:#159447}
+.product-row{border:1px solid #eee;padding:14px;border-radius:10px;margin:10px 0}
+.hidden{display:none!important}
+#message{padding:10px;color:#54218a}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="logo">PAMAC<span>.</span> ADMIN</div>
+  <a href="../index.html" style="color:white">View Shop</a>
+</header>
+
+<main class="admin-wrap">
+  <h1>Administration</h1>
+  <p>Manage your PAMAC footwear collection.</p>
+  <p id="message">Connect your Supabase project to continue.</p>
+
+  <section id="login" class="admin-card">
+    <h2>Admin Login</h2>
+    <input id="email" type="email" placeholder="Admin email">
+    <input id="password" type="password" placeholder="Password">
+    <button class="admin-btn" onclick="loginAdmin()">Sign In</button>
+  </section>
+
+  <section id="dashboard" class="hidden">
+    <div class="admin-card">
+      <h2>Stock Overview</h2>
+      <h1 id="totalProducts">0</h1>
+      <p>Total products</p>
+      <h2 id="totalStock">0</h2>
+      <p>Total pairs in stock</p>
+      <button class="admin-btn danger" onclick="logoutAdmin()">Sign Out</button>
+    </div>
+
+    <div class="admin-card">
+      <h2 id="formTitle">Add New Shoe</h2>
+      <input id="productName" placeholder="Product name">
+      <input id="productPrice" type="number" placeholder="Price in KSh">
+      <select id="productCategory">
+        <option value="Ladies">Ladies</option>
+        <option value="Men">Men</option>
+        <option value="Kids">Kids</option>
+        <option value="Slides">Slides</option>
+      </select>
+      <input id="productSizes" placeholder="Sizes e.g. 27,28,29,30">
+      <input id="productQty" type="number" placeholder="Quantity in stock">
+      <input id="productImage" type="url" placeholder="Product image URL (optional)">
+      <button class="admin-btn success" onclick="saveProduct()">Save Product</button>
+      <button class="admin-btn hidden" id="cancelEdit" onclick="resetForm()">Cancel Edit</button>
+    </div>
+
+    <div class="admin-card">
+      <h2>Manage Products</h2>
+      <div id="productList">Loading products...</div>
+    </div>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/config.js"></script>
+<script src="../js/admin.js"></script>
+</body>
+</html>
