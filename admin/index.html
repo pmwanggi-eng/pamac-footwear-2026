@@ -199,6 +199,8 @@ button:active {
       Sign In
     </button>
 
+    <p><button type="button" class="admin-btn" onclick="forgotAdminPassword()">Forgot password?</button></p>
+
   </section>
 
   <!-- ADMIN DASHBOARD -->
@@ -319,6 +321,13 @@ button:active {
         Loading products...
       </div>
 
+    </div>
+
+    <div class="admin-card">
+      <h2>Customer Shoe Requests</h2>
+      <p>Review requests for shoes that are not currently in stock.</p>
+      <button class="admin-btn" onclick="loadRequests()">Refresh Requests</button>
+      <div id="requestList">Loading requests...</div>
     </div>
 
   </section>
