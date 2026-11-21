@@ -1,0 +1,297 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#54218a">
+<title>Request a Shoe | PAMAC</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+.request-wrap {
+  max-width:720px;
+  margin:35px auto;
+  padding:0 16px;
+}
+.request-card {
+  background:#fff;
+  padding:24px;
+  border-radius:16px;
+  box-shadow:0 5px 24px #0001;
+}
+.request-card h1 { color:#54218a; }
+.request-card p {
+  color:#666;
+  line-height:1.6;
+}
+.request-card label {
+  display:block;
+  margin:15px 0 6px;
+  font-weight:bold;
+  color:#54218a;
+}
+.request-card input,
+.request-card textarea {
+  width:100%;
+  padding:13px;
+  border:1px solid #ddd;
+  border-radius:8px;
+  font-size:16px;
+}
+.request-card button {
+  margin-top:18px;
+  width:100%;
+  padding:15px;
+  border:0;
+  border-radius:9px;
+  background:#168b50;
+  color:white;
+  font-weight:bold;
+  font-size:16px;
+}
+.request-card button:disabled {
+  opacity:.6;
+}
+#requestMessage {
+  margin-top:14px;
+  overflow-wrap:anywhere;
+}
+.small { font-size:13px; }
+</style>
+</head>
+
+<body>
+
+<header class="header">
+  <div class="logo">PAMAC<span>.</span></div>
+  <button class="menu" onclick="toggleMenu()">☰</button>
+  <nav id="navigation">
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="request.html">Request a Shoe</a>
+  </nav>
+</header>
+
+<section class="shop-hero">
+  <p>CAN'T FIND YOUR SIZE OR STYLE?</p>
+  <h1>Request a Shoe</h1>
+  <p>Tell us what you need. We'll help you find it!</p>
+</section>
+
+<main class="request-wrap">
+
+<form class="request-card" id="shoeRequestForm">
+
+  <h1>Make a Shoe Request</h1>
+
+  <p>
+    Request any shoe that is unavailable in our shop.
+    Your request will be saved and sent to PAMAC WhatsApp.
+  </p>
+
+  <label for="shoeName">Shoe name or description *</label>
+  <input id="shoeName"
+    required maxlength="120"
+    placeholder="e.g. Dolly shoes, black">
+
+  <label for="shoeSize">Shoe size *</label>
+  <input id="shoeSize"
+    required maxlength="30"
+    placeholder="e.g. 38">
+
+  <label for="requestQty">Quantity *</label>
+  <input id="requestQty"
+    type="number" min="1" max="50"
+    value="1" required>
+
+  <label for="customerName">Your full name *</label>
+  <input id="customerName"
+    required maxlength="100"
+    placeholder="Enter your name">
+
+  <label for="customerPhone">Phone number *</label>
+  <input id="customerPhone"
+    required type="tel" maxlength="30"
+    placeholder="07... or +254...">
+
+  <label for="requestNotes">Extra details (optional)</label>
+  <textarea id="requestNotes"
+    rows="3" maxlength="500"
+    placeholder="Colour, preferred brand, etc."></textarea>
+
+  <label for="requestPhoto">
+    Upload shoe reference photo (optional)
+  </label>
+  <input id="requestPhoto"
+    type="file" accept="image/jpeg,image/png,image/webp">
+
+  <p class="small">
+    Photo limit: 5 MB. Please upload a shoe photo only.
+  </p>
+
+  <button type="submit" id="submitRequest">
+    Send Shoe Request on WhatsApp
+  </button>
+
+  <div id="requestMessage" role="status"></div>
+
+</form>
+</main>
+
+<footer>
+  <h3>PAMAC FOOT WEAR COLLECTION</h3>
+  <p>Walk with confidence. Walk with PAMAC.</p>
+  <p>© 2026 PAMAC</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+
+<script>
+const form = document.getElementById("shoeRequestForm");
+const msg = document.getElementById("requestMessage");
+const submit = document.getElementById("submitRequest");
+
+const PAMAC_WHATSAPP = "254795766465";
+
+form.addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  submit.disabled = true;
+  submit.textContent = "Saving your request...";
+
+  try {
+
+    const name =
+      document.getElementById("shoeName").value.trim();
+
+    const size =
+      document.getElementById("shoeSize").value.trim();
+
+    const qty =
+      Number(document.getElementById("requestQty").value);
+
+    const customer =
+      document.getElementById("customerName").value.trim();
+
+    const phone =
+      document.getElementById("customerPhone").value.trim();
+
+    const notes =
+      document.getElementById("requestNotes").value.trim();
+
+    const file =
+      document.getElementById("requestPhoto").files[0];
+
+    if (!name || !size || !customer || !phone ||
+        !Number.isInteger(qty) || qty < 1 || qty > 50) {
+      throw new Error("Please complete all required fields correctly.");
+    }
+
+    if (file && (
+      !["image/jpeg", "image/png", "image/webp"].includes(file.type) ||
+      file.size > 5 * 1024 * 1024
+    )) {
+      throw new Error("Choose a JPG, PNG or WEBP image under 5 MB.");
+    }
+
+    let photo_url = null;
+
+    // Upload optional photo
+    if (file) {
+      submit.textContent = "Uploading shoe photo...";
+
+      const ext = file.type === "image/png" ? "png" :
+                  file.type === "image/webp" ? "webp" : "jpg";
+
+      const path =
+        Date.now() + "_" +
+        Math.random().toString(36).slice(2) +
+        "." + ext;
+
+      const upload = await supabaseClient.storage
+        .from("shoe-requests")
+        .upload(path, file, {
+          contentType: file.type,
+          upsert: false
+        });
+
+      if (upload.error) throw upload.error;
+
+      photo_url = supabaseClient.storage
+        .from("shoe-requests")
+        .getPublicUrl(path).data.publicUrl;
+    }
+
+    // Save request in Supabase
+    submit.textContent = "Saving request...";
+
+    const result = await supabaseClient
+      .from("shoe_requests")
+      .insert({
+        shoe_name: name,
+        size: size,
+        quantity: qty,
+        customer_name: customer,
+        customer_phone: phone,
+        notes: notes,
+        photo_url: photo_url
+      });
+
+    if (result.error) throw result.error;
+
+    // Prepare WhatsApp message
+    const whatsappMessage =
+`HELLO PAMAC FOOT WEAR COLLECTION!
+
+I would like to request an unavailable shoe.
+
+SHOE DETAILS
+Shoe name: ${name}
+Size: ${size}
+Quantity: ${qty}
+
+CUSTOMER DETAILS
+Name: ${customer}
+Phone: ${phone}
+
+Extra details: ${notes || "None"}
+
+Reference photo: ${photo_url || "No photo attached."}
+
+Please confirm availability and price.
+
+Thank you!`;
+
+    const whatsappLink =
+      "https://wa.me/" + PAMAC_WHATSAPP +
+      "?text=" + encodeURIComponent(whatsappMessage);
+
+    msg.style.color = "#168b50";
+    msg.textContent =
+      "Request saved successfully! Opening PAMAC WhatsApp...";
+
+    form.reset();
+
+    // Open WhatsApp with the prepared message
+    window.location.href = whatsappLink;
+
+  } catch (error) {
+
+    msg.style.color = "#c62828";
+    msg.textContent =
+      "Could not submit request: " +
+      (error.message || "Please try again.");
+
+    submit.disabled = false;
+    submit.textContent = "Send Shoe Request on WhatsApp";
+  }
+});
+</script>
+
+</body>
+</html>
+
