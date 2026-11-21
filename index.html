@@ -1,18 +1,103 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#54218a">
+<meta name="description" content="PAMAC FOOT WEAR COLLECTION — quality, affordable footwear and easy WhatsApp ordering.">
 <title>PAMAC FOOT WEAR COLLECTION</title>
 <link rel="stylesheet" href="css/style.css">
+<style>
+/* PAMAC brand section — scoped styles so the existing shop stylesheet stays intact */
+.pamac-brand {
+  width: min(1100px, calc(100% - 32px));
+  margin: 38px auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 28px;
+  align-items: center;
+  padding: 22px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #f5efff, #fff8ed);
+  box-shadow: 0 12px 34px rgba(46, 22, 75, .10);
+}
+.pamac-brand-photo {
+  width: 100%;
+  max-height: 560px;
+  object-fit: cover;
+  object-position: center 28%;
+  display: block;
+  border-radius: 18px;
+  background: #eee;
+}
+.pamac-brand-copy { padding: 18px; }
+.pamac-brand-kicker {
+  color: #e87518;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: .78rem;
+}
+.pamac-brand-copy h2 {
+  color: #54218a;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  line-height: 1.12;
+  margin: 12px 0;
+}
+.pamac-brand-copy p {
+  color: #51475c;
+  line-height: 1.75;
+  font-size: 1rem;
+}
+.pamac-brand-points {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px 0;
+}
+.pamac-brand-points span {
+  background: #fff;
+  border: 1px solid #e8dff3;
+  color: #54218a;
+  border-radius: 999px;
+  padding: 8px 13px;
+  font-size: .88rem;
+  font-weight: 700;
+}
+.pamac-brand-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+.pamac-brand-actions a {
+  display: inline-block;
+  text-decoration: none;
+  border-radius: 999px;
+  padding: 12px 20px;
+  font-weight: 800;
+}
+.pamac-brand-shop { background: #54218a; color: white; }
+.pamac-brand-wa { background: #168b48; color: white; }
+@media (max-width: 720px) {
+  .pamac-brand {
+    grid-template-columns: 1fr;
+    width: min(100% - 22px, 560px);
+    padding: 12px;
+    gap: 8px;
+    margin: 24px auto;
+  }
+  .pamac-brand-photo { max-height: 470px; object-position: center 25%; }
+  .pamac-brand-copy { padding: 12px 10px 18px; }
+}
+</style>
 </head>
 <body>
 
 <header class="header">
   <div class="logo">PAMAC<span>.</span></div>
-  <button class="menu" onclick="toggleMenu()">☰</button>
+  <button class="menu" onclick="toggleMenu()" aria-label="Open navigation">☰</button>
   <nav id="navigation">
     <a href="index.html">Home</a>
     <a href="shop.html">Shop</a>
@@ -25,6 +110,36 @@
   <h1>Step Into Your <span>Style.</span></h1>
   <p>Discover quality footwear at affordable prices.</p>
   <a class="shop-btn" href="shop.html">EXPLORE COLLECTION</a>
+</section>
+
+<section class="pamac-brand" aria-label="Meet PAMAC">
+  <img class="pamac-brand-photo"
+       src="assets/images/pamac-brand-photo.webp"
+       alt="PAMAC brand photograph"
+       loading="lazy">
+  <div class="pamac-brand-copy">
+    <span class="pamac-brand-kicker">Our brand · Our promise</span>
+    <h2>Every step tells a story.</h2>
+    <p>
+      Welcome to <strong>PAMAC FOOT WEAR COLLECTION</strong>, your place
+      to discover beautiful, comfortable and affordable footwear.
+      We believe great style should be easy to find and friendly to your budget.
+    </p>
+    <p>
+      Explore our collection, check available sizes and prices, or request
+      a shoe that is currently unavailable. We are happy to help you find
+      the right pair.
+    </p>
+    <div class="pamac-brand-points">
+      <span>Quality footwear</span>
+      <span>Affordable prices</span>
+      <span>Easy WhatsApp ordering</span>
+    </div>
+    <div class="pamac-brand-actions">
+      <a class="pamac-brand-shop" href="shop.html">Shop collection</a>
+      <a class="pamac-brand-wa" href="https://wa.me/254795766465" target="_blank" rel="noopener">Chat with PAMAC</a>
+    </div>
+  </div>
 </section>
 
 <section class="features">
@@ -52,10 +167,9 @@
 </footer>
 
 <a class="whatsapp"
-href="https://wa.me/254795766465"
-target="_blank">WhatsApp Us</a>
+   href="https://wa.me/254795766465"
+   target="_blank" rel="noopener">WhatsApp Us</a>
 
 <script src="js/app.js"></script>
 </body>
 </html>
-
