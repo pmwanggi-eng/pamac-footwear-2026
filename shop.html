@@ -204,7 +204,41 @@ content="Shop quality and affordable footwear at PAMAC FOOT WEAR COLLECTION. Ord
   }
 }
 </style>
-</head>
+
+<style id="pamac-large-shoe-photos">
+.products {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+  gap: 22px !important;
+}
+.product-image {
+  width: 100% !important;
+  height: 440px !important;
+  min-height: 440px !important;
+  padding: 8px !important;
+  overflow: hidden !important;
+  background: #f4eff9 !important;
+}
+.product-image img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  object-position: center !important;
+}
+@media(max-width:600px) {
+  .products {
+    grid-template-columns: 1fr !important;
+  }
+  .product-image {
+    height: 420px !important;
+    min-height: 420px !important;
+  }
+}
+</style>
+\n</head>
 
 <body>
 
