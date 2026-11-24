@@ -1,0 +1,25 @@
+{
+  "id": "/pamac-footwear-2026/",
+  "name": "PAMAC FOOT WEAR COLLECTION",
+  "short_name": "PAMAC",
+  "description": "Quality, affordable footwear and easy WhatsApp ordering.",
+  "start_url": "/pamac-footwear-2026/",
+  "scope": "/pamac-footwear-2026/",
+  "display": "standalone",
+  "background_color": "#54218a",
+  "theme_color": "#54218a",
+  "icons": [
+    {
+      "src": "assets/icons/pamac-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/pamac-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
